@@ -1,2 +1,53 @@
-# Auto detect text files and perform LF normalization
-* text=auto
+# Git Attributes file for consistent handling across different environments
+
+# Auto-detect text files and perform LF normalization in the repository.
+# On checkout, files will use the OS's default line ending (CRLF on Windows, LF on Linux/macOS).
+* text=auto eol=lf
+
+# Explicitly declare text files we know should be normalized.
+# Enforcing 'eol=lf' ensures that these files ALWAYS have LF line endings in the repository
+# and when checked out on non-Windows systems. On Windows checkout, Git will convert to CRLF.
+*.cs      text eol=lf
+*.cshtml  text eol=lf
+*.csproj  text eol=lf
+*.sln     text eol=lf
+*.json    text eol=lf
+*.xml     text eol=lf
+*.yml     text eol=lf
+*.yaml    text eol=lf
+*.config  text eol=lf
+*.md      text eol=lf
+*.txt     text eol=lf
+*.sh      text eol=lf
+*.ps1     text eol=lf
+*.gitignore text eol=lf
+*.gitattributes text eol=lf
+Dockerfile text eol=lf
+
+# Explicitly declare files that are binary and should not be modified or diffed as text.
+*.dll     binary
+*.exe     binary
+*.pdb     binary
+*.nupkg   binary
+*.snupkg  binary
+*.zip     binary
+*.gz      binary
+*.png     binary
+*.jpg     binary
+*.jpeg    binary
+*.gif     binary
+*.ico     binary
+*.woff    binary
+*.woff2   binary
+*.ttf     binary
+*.otf     binary
+*.eot     binary
+*.pdf     binary
+*.snk     binary # Strong name key files
+*.pfx     binary
+*.mdf     binary # SQL database files
+*.ldf     binary
+*.sdf     binary
+
+# Consider for specific large files if diffs become problematic (optional)
+# packages.lock.json diff=binary
