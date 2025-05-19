@@ -31,7 +31,7 @@ namespace zenon_Application
                 return;
             }
 
-            string currentSection = "";
+            var currentSection = "";
 
             try
             {
@@ -77,12 +77,12 @@ namespace zenon_Application
         /// <param name="line">The line to parse.</param>
         private void ParseVariableMapping(string line)
         {
-            string[] parts = line.Split('=');
+            var parts = line.Split('=');
             if (parts.Length == 2)
             {
-                string channelIndex = parts[0].Trim();
+                var channelIndex = parts[0].Trim();
 
-                if (int.TryParse(parts[1].Trim(), out int variableId))
+                if (int.TryParse(parts[1].Trim(), out var variableId))
                     _channelToVariableIdMap[channelIndex] = variableId;
                 else
                     Console.WriteLine($"Warning: Could not parse variable ID in line: {line}");
@@ -92,7 +92,6 @@ namespace zenon_Application
                 Console.WriteLine($"Warning: Malformed variable mapping line: {line}");
             }
         }
-
 
         /// <summary>
         /// Parses a line from the value entry section.
@@ -105,29 +104,32 @@ namespace zenon_Application
         /// </remarks>
         private void ParseValueEntry(string line)
         {
-            string[] channelAndValueParts = line.Split([':'], 2);
+            var channelAndValueParts = line.Split([':'], 2);
             if (channelAndValueParts.Length == 2)
             {
-                string channelIndex = channelAndValueParts[0].Trim();
-                string[] valueParts = channelAndValueParts[1].Split(';');
+                var channelIndex = channelAndValueParts[0].Trim();
+                var valueParts = channelAndValueParts[1].Split(';');
 
                 if (valueParts.Length == 3)
                 {
-                    if (!_channelToVariableIdMap.TryGetValue(channelIndex, out int variableId))
+                    if (!_channelToVariableIdMap.TryGetValue(channelIndex, out var variableId))
                     {
-                        Console.WriteLine($"Warning: Kanal-Index '{channelIndex}' not found in variable mappings. Skipping line: {line}");
+                        Console.WriteLine(
+                            $"Warning: Channel-Index '{channelIndex}' not found in variable mappings. Skipping line: {line}");
                         return;
                     }
 
                     // Using InvariantCulture for parsing double to handle '.' as decimal separator
-                    if (!double.TryParse(valueParts[0].Trim(), NumberStyles.Any, CultureInfo.InvariantCulture, out double value))
+                    if (!double.TryParse(valueParts[0].Trim(), NumberStyles.Any, CultureInfo.InvariantCulture,
+                            out var value))
                     {
                         Console.WriteLine($"Warning: Could not parse value in line: {line}");
                         return;
                     }
 
                     // Parsing timestamp. Format: "dd.MM.yyyy HH:mm:ss.fff"
-                    if (!DateTime.TryParseExact(valueParts[2].Trim(), "dd.MM.yyyy HH:mm:ss.fff", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime timestamp))
+                    if (!DateTime.TryParseExact(valueParts[2].Trim(), "dd.MM.yyyy HH:mm:ss.fff",
+                            CultureInfo.InvariantCulture, DateTimeStyles.None, out var timestamp))
                     {
                         Console.WriteLine($"Warning: Could not parse timestamp in line: {line}");
                         return;
@@ -161,9 +163,9 @@ namespace zenon_Application
         /// </remarks>
         private void WriteOutput(string inputFilePath)
         {
-            string outputDirectory = Path.GetDirectoryName(inputFilePath) ?? ".";
-            string outputFileName = Path.GetFileNameWithoutExtension(inputFilePath) + "_stats.txt";
-            string outputFilePath = Path.Combine(outputDirectory, outputFileName);
+            var outputDirectory = Path.GetDirectoryName(inputFilePath) ?? ".";
+            var outputFileName = Path.GetFileNameWithoutExtension(inputFilePath) + "_stats.txt";
+            var outputFilePath = Path.Combine(outputDirectory, outputFileName);
 
             try
             {
@@ -172,6 +174,7 @@ namespace zenon_Application
                     foreach (var statsEntry in _variableStatistics.OrderBy(kv => kv.Key))
                         writer.WriteLine(statsEntry.Value.ToString());
                 }
+
                 Console.WriteLine($"Successfully processed file. Output written to: {outputFilePath}");
             }
             catch (Exception ex)

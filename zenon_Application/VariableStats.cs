@@ -17,11 +17,11 @@ namespace zenon_Application
     /// </remarks>
     public class VariableStats(int variableId)
     {
-        public int VariableId { get; } = variableId;
-        public double MinValue { get; private set; } = double.MaxValue;
-        public DateTime MinTimestamp { get; private set; }
-        public double MaxValue { get; private set; } = double.MinValue;
-        public DateTime MaxTimestamp { get; private set; }
+        private int VariableId { get; } = variableId;
+        private double MinValue { get; set; } = double.MaxValue;
+        private DateTime MinTimestamp { get; set; }
+        private double MaxValue { get; set; } = double.MinValue;
+        private DateTime MaxTimestamp { get; set; }
         private bool _isInitialized;
 
         public void Update(double value, DateTime timestamp)

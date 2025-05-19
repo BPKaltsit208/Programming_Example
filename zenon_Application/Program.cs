@@ -10,7 +10,7 @@ namespace zenon_Application
     // It extracts variable mappings and values, and writes the output to a file.
     // The output file is named based on the input file name with a ".out" extension.
     // The program handles exceptions and provides usage instructions if no arguments are provided.
-    public class Program
+    public static class Program
     {
         public static void Main(string[] args)
         {
@@ -25,7 +25,7 @@ namespace zenon_Application
                 return;
             }
 
-            string inputFile = args[0];
+            var inputFile = args[0];
             var analyzer = new ZenonLogAnalyzer();
             analyzer.ProcessFile(inputFile);
         }
